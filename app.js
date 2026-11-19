@@ -1,5 +1,32 @@
 document.documentElement.classList.add("js");
 
+// Colour scheme toggle (classic / deep pink), remembered between visits.
+const root = document.documentElement;
+const themeToggle = document.querySelector(".theme-toggle");
+
+function applyTheme(pink) {
+  if (pink) {
+    root.dataset.theme = "pink";
+  } else {
+    delete root.dataset.theme;
+  }
+  themeToggle.textContent = pink ? "Dark" : "Pink";
+}
+
+let savedTheme = null;
+try {
+  savedTheme = localStorage.getItem("theme");
+} catch (e) {}
+applyTheme(savedTheme === "pink");
+
+themeToggle.addEventListener("click", () => {
+  const pink = root.dataset.theme !== "pink";
+  applyTheme(pink);
+  try {
+    localStorage.setItem("theme", pink ? "pink" : "classic");
+  } catch (e) {}
+});
+
 // Footer year.
 document.getElementById("year").textContent = new Date().getFullYear();
 
